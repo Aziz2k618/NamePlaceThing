@@ -1,5 +1,7 @@
+import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { COLORS, FONTS, RADIUS, SPACING } from '../constants/theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,7 +19,6 @@ const BG_ITEMS = [
   { label: '🌍', top: 0.78, left: 0.10 },
   { label: 'N', top: 0.83, left: 0.80 },
   { label: '🎯', top: 0.90, left: 0.35 },
-  { label: '🎨', top: 0.90, left: 0.55 }
 ];
 
 function FloatingItem({ label, top, left }: { label: string; top: number; left: number }) {
@@ -33,16 +34,16 @@ function FloatingItem({ label, top, left }: { label: string; top: number; left: 
     Animated.loop(
       Animated.parallel([
         Animated.sequence([
-          Animated.timing(translateY, { toValue: -yDist, duration, useNativeDriver: true, }),
-          Animated.timing(translateY, { toValue: yDist, duration, useNativeDriver: true, }),
+          Animated.timing(translateY, { toValue: -yDist, duration, useNativeDriver: true }),
+          Animated.timing(translateY, { toValue: yDist, duration, useNativeDriver: true }),
         ]),
         Animated.sequence([
-          Animated.timing(translateX, { toValue: -xDist, duration: duration * 1.2, useNativeDriver: true, }),
-          Animated.timing(translateX, { toValue: xDist, duration: duration * 1.2, useNativeDriver: true, }),
+          Animated.timing(translateX, { toValue: -xDist, duration: duration * 1.2, useNativeDriver: true }),
+          Animated.timing(translateX, { toValue: xDist, duration: duration * 1.2, useNativeDriver: true }),
         ]),
         Animated.sequence([
-          Animated.timing(rotate, { toValue: 1, duration: duration * 2, useNativeDriver: true, }),
-          Animated.timing(rotate, { toValue: -1, duration: duration * 2, useNativeDriver: true, }),
+          Animated.timing(rotate, { toValue: 1, duration: duration * 2, useNativeDriver: true }),
+          Animated.timing(rotate, { toValue: -1, duration: duration * 2, useNativeDriver: true }),
         ]),
       ])
     ).start();
@@ -58,11 +59,7 @@ function FloatingItem({ label, top, left }: { label: string; top: number; left: 
       style={[styles.bgItem, {
         top: top * height,
         left: left * width,
-        transform: [
-          { translateY },
-          { translateX },
-          { rotate: rotateInterpolate },
-        ],
+        transform: [{ translateY }, { translateX }, { rotate: rotateInterpolate }],
       }]}
     >
       {label}
@@ -71,6 +68,8 @@ function FloatingItem({ label, top, left }: { label: string; top: number; left: 
 }
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
 
@@ -79,7 +78,7 @@ export default function HomeScreen() {
         <FloatingItem key={index} {...item} />
       ))}
 
-      {/* Glow blobs */}
+      {/* Blobs */}
       <View style={styles.blob1} />
       <View style={styles.blob2} />
       <View style={styles.blob3} />
@@ -87,69 +86,87 @@ export default function HomeScreen() {
       {/* Title */}
       <View style={styles.titleContainer}>
         <View style={styles.tileRow}>
-          <View style={[styles.tile, { backgroundColor: '#FF8C00' }]}>
+          <View style={[styles.tile, { backgroundColor: COLORS.primary }]}>
             <Text style={styles.tileLetter}>N</Text>
           </View>
-          <View style={[styles.tile, { backgroundColor: '#4CAF50' }]}>
+          <View style={[styles.tile, { backgroundColor: COLORS.secondary }]}>
             <Text style={styles.tileLetter}>P</Text>
           </View>
-          <View style={[styles.tile, { backgroundColor: '#FF8C00' }]}>
+          <View style={[styles.tile, { backgroundColor: COLORS.primary }]}>
             <Text style={styles.tileLetter}>A</Text>
           </View>
-          <View style={[styles.tile, { backgroundColor: '#4CAF50' }]}>
+          <View style={[styles.tile, { backgroundColor: COLORS.secondary }]}>
             <Text style={styles.tileLetter}>T</Text>
           </View>
         </View>
         <Text style={styles.titleMain}>Name Place</Text>
-        <Text style={styles.titleMain2}>Animal Thing!</Text>
-        <View style={styles.tagContainer}>
+        <Text style={styles.titleAccent}>Animal Thing!</Text>
+        <View style={styles.tag}>
           <Text style={styles.tagText}>🎯 The Ultimate Word Battle Game</Text>
         </View>
       </View>
 
       {/* Main Buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonPrimary} activeOpacity={0.85}>
-          <Text style={styles.buttonIcon}>🌐</Text>
-          <View style={styles.buttonTextContainer}>
-            <Text style={styles.buttonText}>Play Online</Text>
-            <Text style={styles.buttonSubText}>2 to 8 players • Real time</Text>
+      <View style={styles.buttons}>
+
+        <TouchableOpacity
+          style={styles.btnPrimary}
+          activeOpacity={0.85}
+          onPress={() => router.push('/lobby')}
+        >
+          <Text style={styles.btnIcon}>🌐</Text>
+          <View style={styles.btnTextWrap}>
+            <Text style={styles.btnText}>Play Online</Text>
+            <Text style={styles.btnSub}>2 to 8 players • Real time</Text>
           </View>
-          <Text style={styles.buttonArrow}>›</Text>
+          <Text style={styles.btnArrow}>›</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonSecondary} activeOpacity={0.85}>
-          <Text style={styles.buttonIcon}>🤖</Text>
-          <View style={styles.buttonTextContainer}>
-            <Text style={styles.buttonText}>Play vs Bot</Text>
-            <Text style={styles.buttonSubText}>Easy • Medium • Hard</Text>
+        <TouchableOpacity
+          style={styles.btnSecondary}
+          activeOpacity={0.85}
+          onPress={() => router.push('/bot-difficulty')}
+        >
+          <Text style={styles.btnIcon}>🤖</Text>
+          <View style={styles.btnTextWrap}>
+            <Text style={styles.btnText}>Play vs Bot</Text>
+            <Text style={styles.btnSub}>Easy • Medium • Hard</Text>
           </View>
-          <Text style={styles.buttonArrow}>›</Text>
+          <Text style={styles.btnArrow}>›</Text>
         </TouchableOpacity>
+
+        <View style={styles.bottomRow}>
+          <TouchableOpacity
+            style={styles.btnSmall}
+            activeOpacity={0.85}
+            onPress={() => router.push('/leaderboard')}
+          >
+            <Text style={styles.btnSmallIcon}>🏆</Text>
+            <Text style={styles.btnSmallText}>Ranks</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.btnSmall}
+            activeOpacity={0.85}
+            onPress={() => router.push('/settings')}
+          >
+            <Text style={styles.btnSmallIcon}>⚙️</Text>
+            <Text style={styles.btnSmallText}>Settings</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.btnSmall}
+            activeOpacity={0.85}
+            onPress={() => router.push('/profile')}
+          >
+            <Text style={styles.btnSmallIcon}>👤</Text>
+            <Text style={styles.btnSmallText}>Profile</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
 
-      {/* Bottom Tab Bar */}
-      <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabItem} activeOpacity={0.8}>
-          <Text style={styles.tabIcon}>🏠</Text>
-          <Text style={[styles.tabLabel, { color: '#FF8C00' }]}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} activeOpacity={0.8}>
-          <Text style={styles.tabIcon}>🏆</Text>
-          <Text style={styles.tabLabel}>Ranks</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabPlayButton} activeOpacity={0.85}>
-          <Text style={styles.tabPlayIcon}>⚡</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} activeOpacity={0.8}>
-          <Text style={styles.tabIcon}>⚙️</Text>
-          <Text style={styles.tabLabel}>Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} activeOpacity={0.8}>
-          <Text style={styles.tabIcon}>👤</Text>
-          <Text style={styles.tabLabel}>Profile</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.version}>v1.0.0 Beta 🚀</Text>
 
     </View>
   );
@@ -158,9 +175,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a2235',
+    backgroundColor: COLORS.backgroundDark,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: SPACING.lg,
     overflow: 'hidden',
   },
   blob1: {
@@ -168,8 +186,8 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
     borderRadius: 175,
-    backgroundColor: '#FF8C00',
-    opacity: 0.12,
+    backgroundColor: COLORS.primary,
+    opacity: 0.08,
     top: -120,
     right: -120,
   },
@@ -178,8 +196,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: '#4CAF50',
-    opacity: 0.1,
+    backgroundColor: COLORS.secondary,
+    opacity: 0.08,
     bottom: -80,
     left: -80,
   },
@@ -188,32 +206,31 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: '#FF8C00',
-    opacity: 0.07,
+    backgroundColor: COLORS.primary,
+    opacity: 0.05,
     bottom: 100,
     right: -60,
   },
   bgItem: {
     position: 'absolute',
     fontSize: 28,
-    opacity: 0.2,
+    opacity: 0.18,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.white,
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 36,
-    paddingHorizontal: 24,
+    marginBottom: SPACING.xl,
   },
   tileRow: {
     flexDirection: 'row',
     gap: 8,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
   tile: {
     width: 52,
     height: 52,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 6,
@@ -225,136 +242,116 @@ const styles = StyleSheet.create({
   tileLetter: {
     fontSize: 28,
     fontWeight: '900',
-    color: '#fff',
+    color: COLORS.white,
   },
   titleMain: {
-    fontSize: 44,
+    fontSize: FONTS.xxl,
     fontWeight: '900',
-    color: '#ffffff',
+    color: COLORS.white,
     letterSpacing: -0.5,
     textAlign: 'center',
   },
-  titleMain2: {
-    fontSize: 44,
+  titleAccent: {
+    fontSize: FONTS.xxl,
     fontWeight: '900',
-    color: '#FF8C00',
+    color: COLORS.primary,
     letterSpacing: -0.5,
     textAlign: 'center',
     marginTop: -6,
   },
-  tagContainer: {
+  tag: {
     backgroundColor: 'rgba(76,175,80,0.15)',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    marginTop: 12,
+    borderRadius: RADIUS.full,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    marginTop: SPACING.sm,
     borderWidth: 1,
     borderColor: 'rgba(76,175,80,0.3)',
   },
   tagText: {
-    color: '#4CAF50',
-    fontSize: 12,
+    color: COLORS.secondary,
+    fontSize: FONTS.small,
     fontWeight: '600',
-    letterSpacing: 0.3,
   },
-  buttonContainer: {
+  buttons: {
     width: '100%',
-    paddingHorizontal: 24,
     gap: 12,
-    marginBottom: 24,
   },
-  buttonPrimary: {
-    backgroundColor: '#FF8C00',
+  btnPrimary: {
+    backgroundColor: COLORS.primary,
     width: '100%',
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    borderRadius: RADIUS.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
     elevation: 8,
-    shadowColor: '#FF8C00',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.5,
     shadowRadius: 10,
   },
-  buttonSecondary: {
+  btnSecondary: {
     backgroundColor: '#1e3a24',
     width: '100%',
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    borderRadius: RADIUS.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
     elevation: 6,
     borderWidth: 1.5,
-    borderColor: '#4CAF50',
+    borderColor: COLORS.secondary,
   },
-  buttonTextContainer: {
+  btnTextWrap: {
     flex: 1,
   },
-  buttonIcon: {
+  btnIcon: {
     fontSize: 30,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 17,
+  btnText: {
+    color: COLORS.white,
+    fontSize: FONTS.medium,
     fontWeight: 'bold',
   },
-  buttonSubText: {
+  btnSub: {
     color: 'rgba(255,255,255,0.65)',
-    fontSize: 12,
+    fontSize: FONTS.small,
     marginTop: 2,
   },
-  buttonArrow: {
+  btnArrow: {
     color: 'rgba(255,255,255,0.5)',
     fontSize: 30,
     fontWeight: '300',
   },
-  tabBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#111827',
+  bottomRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-    paddingBottom: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#1f2937',
-    elevation: 20,
+    gap: 10,
   },
-  tabItem: {
-    alignItems: 'center',
-    gap: 3,
+  btnSmall: {
     flex: 1,
+    backgroundColor: COLORS.card,
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.lg,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    gap: 4,
   },
-  tabIcon: {
+  btnSmallIcon: {
     fontSize: 22,
   },
-  tabLabel: {
-    fontSize: 10,
-    color: '#6b7280',
+  btnSmallText: {
+    color: COLORS.textMuted,
+    fontSize: 11,
     fontWeight: '500',
   },
-  tabPlayButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#FF8C00',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    elevation: 10,
-    shadowColor: '#FF8C00',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-  },
-  tabPlayIcon: {
-    fontSize: 26,
+  version: {
+    position: 'absolute',
+    bottom: 20,
+    color: COLORS.border,
+    fontSize: 11,
   },
 });
