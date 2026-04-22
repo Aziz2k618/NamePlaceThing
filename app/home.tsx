@@ -127,9 +127,9 @@ export default function HomeScreen() {
           activeOpacity={0.85}
           onPress={() => router.push('/bot-difficulty')}
         >
-          <Text style={styles.btnIcon}>🤖</Text>
+          <Text style={styles.btnIcon}>🎮</Text>
           <View style={styles.btnTextWrap}>
-            <Text style={styles.btnText}>Play vs Bot</Text>
+            <Text style={styles.btnText}>Single Player</Text>
             <Text style={styles.btnSub}>Easy • Medium • Hard</Text>
           </View>
           <Text style={styles.btnArrow}>›</Text>
