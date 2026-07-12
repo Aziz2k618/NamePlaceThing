@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { validateAnswer } from '../constants/dictionary/index';
 import { COLORS, FONTS, RADIUS, SPACING } from '../constants/theme';
 
 const LETTERS = 'ABCDEFGHIJKLMNOPRSTUVWY'.split('');
@@ -50,8 +51,14 @@ function getBotAnswer(category: string, letter: string, difficulty: string): str
 function calculateScore(
   playerAnswer: string,
   botAnswer: string,
+  category: string,
+  letter: string,
 ): number {
   if (!playerAnswer.trim()) return 0;
+
+  const isValid = validateAnswer(category, letter, playerAnswer);
+  if (!isValid) return 0;
+
   if (playerAnswer.trim().toLowerCase() === botAnswer.trim().toLowerCase()) return 5;
   return 10;
 }
@@ -159,12 +166,12 @@ export default function GameScreen() {
     setBotAnswers(bAnswers);
 
     const playerScore = answers.reduce((total, ans, i) => {
-      return total + calculateScore(ans, bAnswers[i]);
+      return total + calculateScore(ans, bAnswers[i], categories[i], currentLetter);
     }, 0);
 
     const botScore = bAnswers.reduce((total, ans, i) => {
       if (!ans.trim()) return total;
-      return total + calculateScore(ans, answers[i]);
+      return total + calculateScore(ans, answers[i], categories[i], currentLetter);
     }, 0);
 
     setRoundScores(prev => [...prev, { player: playerScore, bot: botScore }]);
@@ -259,24 +266,35 @@ export default function GameScreen() {
 
           {/* Answer comparison */}
           <View style={styles.answerReviewStatic}>
-            {categories.map((cat, i) => (
-              <View key={cat} style={styles.reviewRow}>
-                <Text style={styles.reviewCat}>{cat}</Text>
-                <Text style={[
-                  styles.reviewAns,
-                  { color: answers[i] ? COLORS.secondary : COLORS.textMuted }
-                ]}>
-                  {answers[i] || '—'}
-                </Text>
-                <Text style={styles.reviewVs}>vs</Text>
-                <Text style={[
-                  styles.reviewAns,
-                  { color: botAnswers[i] ? COLORS.danger : COLORS.textMuted }
-                ]}>
-                  {botAnswers[i] || '—'}
-                </Text>
-              </View>
-            ))}
+            {categories.map((cat, i) => {
+              const isPlayerValid = answers[i] ? validateAnswer(cat, currentLetter, answers[i]) : false;
+              const isBotValid = botAnswers[i] ? validateAnswer(cat, currentLetter, botAnswers[i]) : false;
+
+              return (
+                <View key={cat} style={styles.reviewRow}>
+                  <Text style={styles.reviewCat}>{cat}</Text>
+                  <Text style={[
+                    styles.reviewAns,
+                    { color: answers[i] 
+                      ? (isPlayerValid ? COLORS.secondary : COLORS.danger) 
+                      : COLORS.textMuted 
+                    }
+                  ]}>
+                    {answers[i] || '—'}
+                  </Text>
+                  <Text style={styles.reviewVs}>vs</Text>
+                  <Text style={[
+                    styles.reviewAns,
+                    { color: botAnswers[i] 
+                      ? (isBotValid ? COLORS.secondary : COLORS.danger) 
+                      : COLORS.textMuted 
+                    }
+                  ]}>
+                    {botAnswers[i] || '—'}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
 
           {/* Auto next round countdown */}

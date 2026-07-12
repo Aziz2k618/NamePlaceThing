@@ -1,0 +1,118 @@
+{
+  "A": [
+    "archery",
+    "athletics",
+    "aerobics",
+    "arm wrestling"
+  ],
+  "B": [
+    "basketball",
+    "baseball",
+    "badminton",
+    "boxing",
+    "bowling"
+  ],
+  "C": [
+    "cricket",
+    "cycling",
+    "climbing",
+    "curling"
+  ],
+  "D": [
+    "diving",
+    "discus"
+  ],
+  "E": [
+    "equestrian"
+  ],
+  "F": [
+    "football",
+    "fencing",
+    "field hockey"
+  ],
+  "G": [
+    "golf",
+    "gymnastics"
+  ],
+  "H": [
+    "hockey",
+    "handball",
+    "hurdles",
+    "high jump"
+  ],
+  "I": [
+    "ice hockey",
+    "ice skating"
+  ],
+  "J": [
+    "javelin",
+    "judo"
+  ],
+  "K": [
+    "karate",
+    "kayaking"
+  ],
+  "L": [
+    "lacrosse",
+    "long jump"
+  ],
+  "M": [
+    "marathon",
+    "martial arts"
+  ],
+  "N": [
+    "netball"
+  ],
+  "O": [
+    "orienteering"
+  ],
+  "P": [
+    "polo",
+    "powerlifting",
+    "pole vault"
+  ],
+  "Q": [
+    "quidditch"
+  ],
+  "R": [
+    "rugby",
+    "rowing",
+    "running"
+  ],
+  "S": [
+    "soccer",
+    "swimming",
+    "surfing",
+    "skateboarding",
+    "skiing",
+    "squash",
+    "snooker",
+    "softball"
+  ],
+  "T": [
+    "tennis",
+    "taekwondo",
+    "table tennis",
+    "triathlon"
+  ],
+  "U": [
+    "ultimate frisbee"
+  ],
+  "V": [
+    "volleyball"
+  ],
+  "W": [
+    "wrestling",
+    "weightlifting",
+    "water polo"
+  ],
+  "X": [
+    "xcross"
+  ],
+  "Y": [
+    "yoga"
+  ],
+  "Z": [
+    "zumba"
+  ]
+}

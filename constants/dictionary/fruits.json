@@ -1,0 +1,102 @@
+{
+  "A": [
+    "apple",
+    "avocado",
+    "apricot",
+    "almond"
+  ],
+  "B": [
+    "banana",
+    "blueberry",
+    "blackberry"
+  ],
+  "C": [
+    "cherry",
+    "coconut",
+    "cranberry",
+    "custard apple"
+  ],
+  "D": [
+    "date",
+    "dragonfruit"
+  ],
+  "E": [
+    "elderberry"
+  ],
+  "F": [
+    "fig"
+  ],
+  "G": [
+    "grape",
+    "guava"
+  ],
+  "H": [
+    "honeydew"
+  ],
+  "I": [
+    "indian gooseberry"
+  ],
+  "J": [
+    "jackfruit"
+  ],
+  "K": [
+    "kiwi"
+  ],
+  "L": [
+    "lemon",
+    "litchi",
+    "lime"
+  ],
+  "M": [
+    "mango",
+    "melon",
+    "mulberry"
+  ],
+  "N": [
+    "nectarine"
+  ],
+  "O": [
+    "orange",
+    "olive"
+  ],
+  "P": [
+    "peach",
+    "pear",
+    "pineapple",
+    "pomegranate",
+    "plum",
+    "papaya"
+  ],
+  "Q": [
+    "quince"
+  ],
+  "R": [
+    "raspberry"
+  ],
+  "S": [
+    "strawberry",
+    "starfruit"
+  ],
+  "T": [
+    "tangerine",
+    "tamarind"
+  ],
+  "U": [
+    "ugli fruit"
+  ],
+  "V": [
+    "vanilla"
+  ],
+  "W": [
+    "watermelon"
+  ],
+  "X": [
+    "ximenia"
+  ],
+  "Y": [
+    "yuzu"
+  ],
+  "Z": [
+    "ziziphus"
+  ]
+}

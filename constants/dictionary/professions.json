@@ -1,0 +1,130 @@
+{
+  "A": [
+    "accountant",
+    "actor",
+    "architect",
+    "artist",
+    "astronaut",
+    "athlete",
+    "attorney"
+  ],
+  "B": [
+    "baker",
+    "banker",
+    "barber",
+    "biologist",
+    "botanist"
+  ],
+  "C": [
+    "carpenter",
+    "chef",
+    "chemist",
+    "coach",
+    "consultant"
+  ],
+  "D": [
+    "dancer",
+    "dentist",
+    "designer",
+    "developer",
+    "doctor",
+    "driver"
+  ],
+  "E": [
+    "economist",
+    "editor",
+    "educator",
+    "engineer"
+  ],
+  "F": [
+    "farmer",
+    "firefighter",
+    "fisherman"
+  ],
+  "G": [
+    "geologist",
+    "graphic designer"
+  ],
+  "H": [
+    "historian",
+    "hairdresser"
+  ],
+  "I": [
+    "illustrator",
+    "inspector"
+  ],
+  "J": [
+    "journalist",
+    "judge"
+  ],
+  "K": [
+    "kindergarten teacher"
+  ],
+  "L": [
+    "lawyer",
+    "lecturer",
+    "librarian"
+  ],
+  "M": [
+    "manager",
+    "mechanic",
+    "model",
+    "musician"
+  ],
+  "N": [
+    "nurse",
+    "nutritionist"
+  ],
+  "O": [
+    "officer",
+    "optician"
+  ],
+  "P": [
+    "painter",
+    "pharmacist",
+    "photographer",
+    "pilot",
+    "plumber",
+    "politician",
+    "professor"
+  ],
+  "Q": [
+    "quality analyst"
+  ],
+  "R": [
+    "receptionist",
+    "researcher"
+  ],
+  "S": [
+    "sailor",
+    "scientist",
+    "singer",
+    "soldier",
+    "surgeon"
+  ],
+  "T": [
+    "teacher",
+    "technician",
+    "therapist",
+    "trader"
+  ],
+  "U": [
+    "umpire"
+  ],
+  "V": [
+    "veterinarian"
+  ],
+  "W": [
+    "waiter",
+    "writer"
+  ],
+  "X": [
+    "xylophonist"
+  ],
+  "Y": [
+    "yoga instructor"
+  ],
+  "Z": [
+    "zoologist"
+  ]
+}

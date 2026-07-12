@@ -1,0 +1,144 @@
+{
+  "A": [
+    "apple",
+    "adidas",
+    "amazon",
+    "audi",
+    "airbnb",
+    "adobe",
+    "asus",
+    "alibaba"
+  ],
+  "B": [
+    "bmw",
+    "boeing",
+    "burberry",
+    "beats",
+    "blackberry",
+    "bugatti"
+  ],
+  "C": [
+    "canon",
+    "coca cola",
+    "chevrolet",
+    "chanel",
+    "cisco"
+  ],
+  "D": [
+    "dell",
+    "disney",
+    "dior",
+    "ducati"
+  ],
+  "E": [
+    "ebay",
+    "esprit"
+  ],
+  "F": [
+    "ford",
+    "ferrari",
+    "facebook",
+    "fendi"
+  ],
+  "G": [
+    "google",
+    "gucci",
+    "gap",
+    "gillette"
+  ],
+  "H": [
+    "honda",
+    "huawei",
+    "hp",
+    "hermes",
+    "hyundai"
+  ],
+  "I": [
+    "ikea",
+    "intel",
+    "instagram"
+  ],
+  "J": [
+    "jaguar",
+    "jeep"
+  ],
+  "K": [
+    "kia",
+    "kodak"
+  ],
+  "L": [
+    "lg",
+    "lamborghini",
+    "levis",
+    "lenovo",
+    "loreal"
+  ],
+  "M": [
+    "microsoft",
+    "mercedes",
+    "motorola",
+    "mcdonalds"
+  ],
+  "N": [
+    "nike",
+    "nintendo",
+    "netflix",
+    "nokia"
+  ],
+  "O": [
+    "oppo",
+    "oracle"
+  ],
+  "P": [
+    "pepsi",
+    "porsche",
+    "puma",
+    "philips"
+  ],
+  "Q": [
+    "qualcomm"
+  ],
+  "R": [
+    "rolex",
+    "realme",
+    "rolls royce"
+  ],
+  "S": [
+    "samsung",
+    "sony",
+    "spotify",
+    "snapchat"
+  ],
+  "T": [
+    "tesla",
+    "toyota",
+    "twitter",
+    "tiktok"
+  ],
+  "U": [
+    "uber",
+    "under armour"
+  ],
+  "V": [
+    "visa",
+    "vivo",
+    "volkswagen"
+  ],
+  "W": [
+    "walmart",
+    "whatsapp"
+  ],
+  "X": [
+    "xiaomi",
+    "xbox"
+  ],
+  "Y": [
+    "yahoo",
+    "youtube",
+    "yamaha"
+  ],
+  "Z": [
+    "zara",
+    "zoom"
+  ]
+}

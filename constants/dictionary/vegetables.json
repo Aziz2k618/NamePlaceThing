@@ -1,0 +1,108 @@
+{
+  "A": [
+    "artichoke",
+    "asparagus",
+    "arugula"
+  ],
+  "B": [
+    "broccoli",
+    "brussels sprout",
+    "beetroot",
+    "bok choy",
+    "bitter gourd"
+  ],
+  "C": [
+    "carrot",
+    "cabbage",
+    "cauliflower",
+    "celery",
+    "capsicum",
+    "corn",
+    "cucumber"
+  ],
+  "D": [
+    "drumstick"
+  ],
+  "E": [
+    "eggplant"
+  ],
+  "F": [
+    "fennel"
+  ],
+  "G": [
+    "garlic",
+    "ginger",
+    "green bean",
+    "green onion"
+  ],
+  "H": [
+    "horseradish"
+  ],
+  "I": [
+    "iceberg lettuce"
+  ],
+  "J": [
+    "jalapeno"
+  ],
+  "K": [
+    "kale",
+    "kohlrabi"
+  ],
+  "L": [
+    "leek",
+    "lettuce"
+  ],
+  "M": [
+    "mushroom",
+    "mint"
+  ],
+  "N": [
+    "neem"
+  ],
+  "O": [
+    "onion",
+    "okra"
+  ],
+  "P": [
+    "potato",
+    "pumpkin",
+    "peas",
+    "parsley",
+    "pepper"
+  ],
+  "Q": [
+    "quinoa"
+  ],
+  "R": [
+    "radish",
+    "rhubarb"
+  ],
+  "S": [
+    "spinach",
+    "sweet potato",
+    "spring onion"
+  ],
+  "T": [
+    "tomato",
+    "turnip",
+    "taro"
+  ],
+  "U": [
+    "ulluco"
+  ],
+  "V": [
+    "valerian"
+  ],
+  "W": [
+    "watercress"
+  ],
+  "X": [
+    "xigua"
+  ],
+  "Y": [
+    "yam"
+  ],
+  "Z": [
+    "zucchini"
+  ]
+}

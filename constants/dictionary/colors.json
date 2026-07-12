@@ -1,0 +1,106 @@
+{
+  "A": [
+    "amber",
+    "aqua",
+    "azure"
+  ],
+  "B": [
+    "black",
+    "blue",
+    "brown",
+    "beige",
+    "burgundy"
+  ],
+  "C": [
+    "cyan",
+    "crimson",
+    "coral",
+    "cream"
+  ],
+  "D": [
+    "dark blue",
+    "dark green"
+  ],
+  "E": [
+    "emerald"
+  ],
+  "F": [
+    "fuchsia"
+  ],
+  "G": [
+    "green",
+    "gold",
+    "grey"
+  ],
+  "H": [
+    "hot pink"
+  ],
+  "I": [
+    "indigo",
+    "ivory"
+  ],
+  "J": [
+    "jade"
+  ],
+  "K": [
+    "khaki"
+  ],
+  "L": [
+    "lavender",
+    "lime",
+    "lilac"
+  ],
+  "M": [
+    "maroon",
+    "magenta",
+    "mint"
+  ],
+  "N": [
+    "navy"
+  ],
+  "O": [
+    "orange",
+    "olive"
+  ],
+  "P": [
+    "pink",
+    "purple",
+    "peach"
+  ],
+  "Q": [
+    "quartz"
+  ],
+  "R": [
+    "red",
+    "rose",
+    "ruby"
+  ],
+  "S": [
+    "silver",
+    "scarlet",
+    "sky blue"
+  ],
+  "T": [
+    "teal",
+    "turquoise",
+    "tan"
+  ],
+  "U": [
+    "ultramarine"
+  ],
+  "V": [
+    "violet"
+  ],
+  "W": [
+    "white"
+  ],
+  "X": [
+    "xanthic"
+  ],
+  "Y": [
+    "yellow"
+  ],
+  "Z": [
+    "zinnwaldite"
+  ]
+}
