@@ -13,9 +13,7 @@ import { validateAnswer } from '../constants/dictionary/index';
 import { COLORS, FONTS, RADIUS, SPACING } from '../constants/theme';
 
 const LETTERS = 'ABCDEFGHIJKLMNOPRSTUVWY'.split('');
-
 const DEFAULT_CATEGORIES = ['Name', 'Place', 'Animal', 'Thing'];
-
 const DEFAULT_ROUNDS = 4;
 
 const TIMER_PER_CATEGORY: Record<string, number> = {
@@ -24,7 +22,7 @@ const TIMER_PER_CATEGORY: Record<string, number> = {
   hard: 7,
 };
 
-type Phase = 'countdown' | 'playing' | 'stopped' | 'roundover' | 'between';
+type Phase = 'countdown' | 'playing' | 'roundover';
 
 function getBotAnswer(category: string, letter: string, difficulty: string): string {
   const answers: Record<string, Record<string, string[]>> = {
@@ -37,18 +35,16 @@ function getBotAnswer(category: string, letter: string, difficulty: string): str
   };
 
   if (difficulty === 'easy' && Math.random() < 0.4) return '';
-
   const categoryAnswers = answers[category];
   if (!categoryAnswers) return '';
   const options = categoryAnswers[letter];
   if (!options) return '';
-
   if (difficulty === 'medium' && Math.random() < 0.2) return '';
-
   return options[Math.floor(Math.random() * options.length)];
 }
 
-function calculateScore(
+// Calculate player score - uses dictionary validation
+function calculatePlayerScore(
   playerAnswer: string,
   botAnswer: string,
   category: string,
@@ -56,10 +52,33 @@ function calculateScore(
 ): number {
   if (!playerAnswer.trim()) return 0;
 
+  // Check starts with correct letter first
+  if (playerAnswer.trim()[0].toUpperCase() !== letter.toUpperCase()) return 0;
+
+  // Validate against dictionary
   const isValid = validateAnswer(category, letter, playerAnswer);
   if (!isValid) return 0;
 
-  if (playerAnswer.trim().toLowerCase() === botAnswer.trim().toLowerCase()) return 5;
+  // Shared answer = 5 pts, unique = 10 pts
+  if (botAnswer.trim() &&
+    playerAnswer.trim().toLowerCase() === botAnswer.trim().toLowerCase()) {
+    return 5;
+  }
+  return 10;
+}
+
+// Calculate bot score - bot answers are always valid, no dictionary check needed
+function calculateBotScore(
+  botAnswer: string,
+  playerAnswer: string,
+): number {
+  if (!botAnswer.trim()) return 0;
+
+  // Shared answer = 5 pts, unique = 10 pts
+  if (playerAnswer.trim() &&
+    botAnswer.trim().toLowerCase() === playerAnswer.trim().toLowerCase()) {
+    return 5;
+  }
   return 10;
 }
 
@@ -80,16 +99,20 @@ export default function GameScreen() {
   const [answers, setAnswers] = useState<string[]>(Array(categories.length).fill(''));
   const [botAnswers, setBotAnswers] = useState<string[]>([]);
   const [roundScores, setRoundScores] = useState<{ player: number; bot: number }[]>([]);
+  const [usedLetters, setUsedLetters] = useState<string[]>([]);
 
   const inputRefs = useRef<(TextInput | null)[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function pickLetter() {
-    return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    const available = LETTERS.filter(l => !usedLetters.includes(l));
+    if (available.length === 0) return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    return available[Math.floor(Math.random() * available.length)];
   }
 
   function startRound() {
     const letter = pickLetter();
+    setUsedLetters(prev => [...prev, letter]);
     setCurrentLetter(letter);
     setAnswers(Array(categories.length).fill(''));
     setTimeLeft(timerDuration);
@@ -114,10 +137,6 @@ export default function GameScreen() {
 
   useEffect(() => {
     if (phase !== 'playing') return;
-    if (timeLeft === 0) {
-      endRound();
-      return;
-    }
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -151,9 +170,7 @@ export default function GameScreen() {
       }
       return;
     }
-    const t = setTimeout(() => {
-      setBetweenRoundTimer(b => b - 1);
-    }, 1000);
+    const t = setTimeout(() => setBetweenRoundTimer(b => b - 1), 1000);
     return () => clearTimeout(t);
   }, [phase, betweenRoundTimer]);
 
@@ -166,12 +183,16 @@ export default function GameScreen() {
     setBotAnswers(bAnswers);
 
     const playerScore = answers.reduce((total, ans, i) => {
-      return total + calculateScore(ans, bAnswers[i], categories[i], currentLetter);
+      return total + calculatePlayerScore(
+        ans,
+        bAnswers[i],
+        categories[i],
+        currentLetter
+      );
     }, 0);
 
     const botScore = bAnswers.reduce((total, ans, i) => {
-      if (!ans.trim()) return total;
-      return total + calculateScore(ans, answers[i], categories[i], currentLetter);
+      return total + calculateBotScore(ans, answers[i]);
     }, 0);
 
     setRoundScores(prev => [...prev, { player: playerScore, bot: botScore }]);
@@ -182,25 +203,6 @@ export default function GameScreen() {
   function handleStop() {
     if (phase !== 'playing') return;
     endRound();
-  }
-
-  function handleNextRound() {
-    if (currentRound >= totalRounds) {
-      const totalPlayer = roundScores.reduce((s, r) => s + r.player, 0);
-      const totalBot = roundScores.reduce((s, r) => s + r.bot, 0);
-      router.replace({
-        pathname: '/results',
-        params: {
-          playerScore: totalPlayer,
-          botScore: totalBot,
-          rounds: JSON.stringify(roundScores),
-          difficulty,
-        },
-      });
-    } else {
-      setBetweenRoundTimer(5);
-      setPhase('between');
-    }
   }
 
   function handleAnswerChange(text: string, index: number) {
@@ -245,13 +247,8 @@ export default function GameScreen() {
       <View style={styles.container}>
         <View style={styles.blob1} />
         <View style={styles.blob2} />
-
         <View style={styles.countdownContainer}>
-
-          {/* Letter */}
           <Text style={styles.letterDisplay}>{currentLetter}</Text>
-
-          {/* Round scores */}
           <View style={styles.scoreRow}>
             <View style={styles.scoreBox}>
               <Text style={styles.scoreLabel}>YOU</Text>
@@ -263,41 +260,26 @@ export default function GameScreen() {
               <Text style={styles.scoreNumber}>{lastScore?.bot ?? 0}</Text>
             </View>
           </View>
-
-          {/* Answer comparison */}
           <View style={styles.answerReviewStatic}>
-            {categories.map((cat, i) => {
-              const isPlayerValid = answers[i] ? validateAnswer(cat, currentLetter, answers[i]) : false;
-              const isBotValid = botAnswers[i] ? validateAnswer(cat, currentLetter, botAnswers[i]) : false;
-
-              return (
-                <View key={cat} style={styles.reviewRow}>
-                  <Text style={styles.reviewCat}>{cat}</Text>
-                  <Text style={[
-                    styles.reviewAns,
-                    { color: answers[i] 
-                      ? (isPlayerValid ? COLORS.secondary : COLORS.danger) 
-                      : COLORS.textMuted 
-                    }
-                  ]}>
-                    {answers[i] || '—'}
-                  </Text>
-                  <Text style={styles.reviewVs}>vs</Text>
-                  <Text style={[
-                    styles.reviewAns,
-                    { color: botAnswers[i] 
-                      ? (isBotValid ? COLORS.secondary : COLORS.danger) 
-                      : COLORS.textMuted 
-                    }
-                  ]}>
-                    {botAnswers[i] || '—'}
-                  </Text>
-                </View>
-              );
-            })}
+            {categories.map((cat, i) => (
+              <View key={cat} style={styles.reviewRow}>
+                <Text style={styles.reviewCat}>{cat}</Text>
+                <Text style={[
+                  styles.reviewAns,
+                  { color: answers[i] ? COLORS.secondary : COLORS.textMuted }
+                ]}>
+                  {answers[i] || '—'}
+                </Text>
+                <Text style={styles.reviewVs}>vs</Text>
+                <Text style={[
+                  styles.reviewAns,
+                  { color: botAnswers[i] ? COLORS.danger : COLORS.textMuted }
+                ]}>
+                  {botAnswers[i] || '—'}
+                </Text>
+              </View>
+            ))}
           </View>
-
-          {/* Auto next round countdown */}
           <View style={styles.autoNextWrap}>
             <Text style={styles.autoNextText}>
               {isLastRound
@@ -312,22 +294,6 @@ export default function GameScreen() {
               ]} />
             </View>
           </View>
-
-        </View>
-      </View>
-    );
-  }
-  if (phase === 'between') {
-    return (
-      <View style={styles.container}>
-        <View style={styles.blob1} />
-        <View style={styles.blob2} />
-        <View style={styles.countdownContainer}>
-          <Text style={styles.roundLabel}>
-            Round {currentRound + 1} starts in
-          </Text>
-          <Text style={styles.countdownNumber}>{betweenRoundTimer}</Text>
-          <Text style={styles.countdownSub}>Get ready for next round!</Text>
         </View>
       </View>
     );
@@ -340,7 +306,6 @@ export default function GameScreen() {
     >
       <View style={styles.blob1} />
       <View style={styles.blob2} />
-
       <View style={styles.topBar}>
         <Text style={styles.roundLabel}>Round {currentRound}/{totalRounds}</Text>
         <View style={[styles.timerCircle, { borderColor: timerColor }]}>
@@ -348,12 +313,10 @@ export default function GameScreen() {
         </View>
         <Text style={styles.diffLabel}>{(difficulty as string).toUpperCase()}</Text>
       </View>
-
       <View style={styles.letterCard}>
         <Text style={styles.letterHint}>Current Letter</Text>
         <Text style={styles.letterDisplay}>{currentLetter}</Text>
       </View>
-
       <ScrollView
         style={styles.inputList}
         keyboardShouldPersistTaps="handled"
@@ -376,7 +339,6 @@ export default function GameScreen() {
           </View>
         ))}
       </ScrollView>
-
       <TouchableOpacity
         style={styles.stopBtn}
         onPress={handleStop}
@@ -384,7 +346,6 @@ export default function GameScreen() {
       >
         <Text style={styles.stopBtnText}>⏹ STOP!</Text>
       </TouchableOpacity>
-
     </KeyboardAvoidingView>
   );
 }
@@ -559,10 +520,6 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: COLORS.border,
   },
-  answerReview: {
-    flex: 1,
-    marginBottom: SPACING.md,
-  },
   reviewRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -585,19 +542,6 @@ const styles = StyleSheet.create({
   reviewVs: {
     fontSize: FONTS.small,
     color: COLORS.border,
-  },
-  nextBtn: {
-    width: '100%',
-    padding: SPACING.md,
-    borderRadius: RADIUS.lg,
-    backgroundColor: COLORS.primary,
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  nextBtnText: {
-    fontSize: FONTS.medium,
-    fontWeight: '900',
-    color: COLORS.white,
   },
   answerReviewStatic: {
     width: '100%',
