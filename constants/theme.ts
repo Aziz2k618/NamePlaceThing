@@ -1,6 +1,6 @@
 export const COLORS = {
   background: '#1a2235',
-  backgroundDark: '#0d1117',
+  backgroundDark: '#17160dff',
   card: '#161b22',
   border: '#30363d',
   primary: '#FF8C00',
