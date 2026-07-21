@@ -1,7 +1,9 @@
 import { useRouter } from 'expo-router';
+import { onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { COLORS, FONTS, SPACING } from '../constants/theme';
+import { auth } from '../firebaseConfig';
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -10,26 +12,28 @@ export default function SplashScreen() {
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
-
     Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 4,
-        useNativeDriver: true,
-      }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }),
+      Animated.spring(scaleAnim, { toValue: 1, friction: 4, useNativeDriver: true }),
     ]).start();
 
-    const timer = setTimeout(() => {
-      router.replace('/home');
-    }, 3000);
+    // Watch auth state — if no user, sign in anonymously
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        signInAnonymously(auth).catch((err) => {
+          console.error('Anonymous sign-in failed:', err);
+        });
+        return; // wait for the next onAuthStateChanged call once signed in
+      }
 
-    return () => clearTimeout(timer);
+      // user exists (uid ready) — hold splash for min 2s so animation isn't jarring
+      const timer = setTimeout(() => {
+        router.replace('/home');
+      }, 2000);
+      return () => clearTimeout(timer);
+    });
 
+    return () => unsubscribe();
   }, []);
 
   return (
