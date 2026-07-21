@@ -57,6 +57,24 @@ export default function MultiplayerGameScreen() {
         return () => unsub();
     }, [code]);
 
+    useEffect(() => {
+        if (!code || !players || Object.keys(players).length === 0) return;
+
+        const entries = Object.entries(players).map(([pUid, p]: [string, any]) => ({
+            uid: pUid, connected: p.connected !== false,
+        }));
+
+        const currentHostPlayer = entries.find(p => p.uid === hostId);
+
+        if (currentHostPlayer && !currentHostPlayer.connected) {
+            const candidates = entries.filter(p => p.connected && p.uid !== hostId);
+            if (candidates.length > 0) {
+                const promoted = candidates.sort((a, b) => a.uid.localeCompare(b.uid))[0];
+                update(ref(rtdb, `lobbies/${code}`), { host: promoted.uid });
+            }
+        }
+    }, [players, hostId]);
+
     //Presence tracking
     useEffect(() => {
         if (!code || !uid) return;
